@@ -1,0 +1,52 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework Condition="'$(TargetFramework)' == ''">net8.0</TargetFramework>
+		<AdminOrgName>cloudinary</AdminOrgName>
+	</PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<PackageId>XperienceByKenticoCloudinaryDAM</PackageId>
+		<Title>Xperience by Kentico Cloudinary DAM</Title>
+		<Description>Cloudinary Digital Asset Meanagement </Description>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+		<IsPackable>true</IsPackable>
+		<PackageOutputPath>$(MSBuildProjectDirectory)\artifacts</PackageOutputPath>
+		<VersionPrefix>1.0.1</VersionPrefix>
+		<VersionSuffix>dev.$([System.Guid]::NewGuid().ToString("N").Substring(0,8))</VersionSuffix>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+	</PropertyGroup>
+	<ItemGroup>
+		<AdminClientPath Include="Client\dist\**">
+			<ProjectName>dam</ProjectName>
+		</AdminClientPath>
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Remove="artifacts\**" />
+		<Compile Remove="Client\node_modules\**" />
+		<EmbeddedResource Remove="artifacts\**" />
+		<EmbeddedResource Remove="Client\node_modules\**" />
+		<None Remove="artifacts\**" />
+		<None Remove="Client\node_modules\**" />
+	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="DatabaseScripts\01.CreateTableCloudinaryDamSettings.sql" />
+	</ItemGroup>
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="CloudinaryDotNet" Version="1.27.9" />
+		<PackageReference Include="kentico.xperience.admin" Version="30.9.1" />
+	</ItemGroup>
+
+	<Target Name="NpmBuild" BeforeTargets="PreBuildEvent">
+		<Message Text="Running npm build" Importance="high" />
+		<Exec Command="powershell -NoProfile -ExecutionPolicy Bypass &quot;$(MSBuildProjectDirectory)\pre-build-event.ps1&quot; -ClientDir &quot;$(MSBuildProjectDirectory)\Client&quot;" />
+	</Target>
+
+	<Target Name="DployPackageToCms" AfterTargets="Pack">
+		<Message Text="Deploying package to the CMS" Importance="high" />
+		<Exec Command="powershell -NoProfile -ExecutionPolicy Bypass &quot;$(MSBuildProjectDirectory)\post-build-event.ps1&quot; -NugetPackageName &quot;$(PackageId)&quot; -NugetPackageVersion &quot;$(PackageVersion)&quot; -OutputDir &quot;$(MSBuildProjectDirectory)\artifacts&quot;" />
+	</Target>
+</Project>
