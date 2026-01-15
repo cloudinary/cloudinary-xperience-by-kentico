@@ -1,4 +1,4 @@
-# 1. Prerequisites
+﻿# 1. Prerequisites
 The integration was developed for the headless CMS Xperience by Kentico, version `30.10.1`.
 Expected software environment
 * MS SQL Server as the database engine
@@ -6,6 +6,9 @@ Expected software environment
 * ASP.NET Core 8
 
 # 2. Project's build actions
+❗❗❗ **IMPORTANT:** ❗❗❗ This actions created for the 'Debug' mode to save time during the development. They can be removed or modified as needed.
+In case if you want to use CI/CD pipeline for the build, you can't rely on this scripts so use the 'Release' mode.
+
 ## 2.1.`pre-build-event.ps1` script
 It builds react js code into js bundle for the further embedding in the output DLL.
 
@@ -21,8 +24,8 @@ It builds react js code into js bundle for the further embedding in the output D
 The main purpose of this script is to install the NuGet package in the CMS and re-run the CMS.
 
 The script relies on the following environment variables:
-`XbyKenticoCmsCsprojPath` - path to the csproj file of the CMS project
-`XbyKenticoCmsProcessName` - name of the CMS process (without .exe)
+* `XbyKenticoCmsCsprojPath` - path to the csproj file of the CMS project
+* `XbyKenticoCmsProcessName` - name of the CMS process (without .exe)
 
 # 3. Database schema changes
 The integration uses iterative migrations. If you want to apply the migrations manually, you can find them in the `Database\Migrations` folder.

@@ -40,12 +40,12 @@
 		<PackageReference Include="kentico.xperience.admin" Version="30.9.1" />
 	</ItemGroup>
 
-	<Target Name="NpmBuild" BeforeTargets="PreBuildEvent">
+	<Target Name="NpmBuild" BeforeTargets="PreBuildEvent" Condition="'$(Configuration)' == 'Debug'">
 		<Message Text="Running npm build" Importance="high" />
 		<Exec Command="powershell -NoProfile -ExecutionPolicy Bypass &quot;$(MSBuildProjectDirectory)\pre-build-event.ps1&quot; -ClientDir &quot;$(MSBuildProjectDirectory)\Client&quot;" />
 	</Target>
 
-	<Target Name="DployPackageToCms" AfterTargets="Pack">
+	<Target Name="DployPackageToCms" AfterTargets="Pack" Condition="'$(Configuration)' == 'Debug'">
 		<Message Text="Deploying package to the CMS" Importance="high" />
 		<Exec Command="powershell -NoProfile -ExecutionPolicy Bypass &quot;$(MSBuildProjectDirectory)\post-build-event.ps1&quot; -NugetPackageName &quot;$(PackageId)&quot; -NugetPackageVersion &quot;$(PackageVersion)&quot; -OutputDir &quot;$(MSBuildProjectDirectory)\artifacts&quot;" />
 	</Target>
