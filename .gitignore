@@ -1,0 +1,6 @@
+/.vs/
+/obj/
+/bin/
+/Client/node_modules/
+/Client/dist/
+/artifacts/
