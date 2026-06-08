@@ -58,7 +58,7 @@ export const AssetSelectorFormComponent = (
               username: props.userName,
               use_saml: props.useSaml,
               saml_iframe_support: props.useIframeSupportForSaml,
-              default_transformations: JSON.parse(props.defaultTransformations),
+              default_transformations: props.defaultTransformations.trim() !== "" ? JSON.parse(props.defaultTransformations) : "",
             }}
             onSelect={handleOnChange}
             disabled={props.errorMessage != null}
