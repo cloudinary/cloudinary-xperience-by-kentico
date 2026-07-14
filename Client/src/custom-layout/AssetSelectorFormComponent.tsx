@@ -31,7 +31,7 @@ export const AssetSelectorFormComponent = (
       return (
         <div>
           Cloudinary Asset JSON Metadata:
-          <span style={{ color: props.value.toString() }}>{props.value}</span>.
+          <span>{props.value}</span>.
         </div>
       );
     } else if (props.editMode === FormEditMode.Disabled) {
