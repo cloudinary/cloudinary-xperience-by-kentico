@@ -28,12 +28,12 @@ export class WebsiteChannelCloudinaryDamSettings {
     if (this.ApiSecret.length === 0 || this.ApiSecret.length > 1024) {
       errors.push("'Api Secret' must be 1-1024 characters");
     }
-    try {
-      if (this.DefaultTransformations?.trim()) {
+    if (this.DefaultTransformations && this.DefaultTransformations.trim() !== "") {
+      try {
         JSON.parse(this.DefaultTransformations);
+      } catch {
+        errors.push("Wrong format for the 'Default Transformations'. The value should be parsable JSON object.");
       }
-    } catch {
-      errors.push("Wrong format for the 'Default Transformations'. The value should be parsable JSON object.");
     }
     return errors;
   }
